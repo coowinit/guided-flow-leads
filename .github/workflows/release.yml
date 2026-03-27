@@ -6,6 +6,9 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,26 +17,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version
+      - name: Set version
         id: vars
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-      - name: Create plugin zip
         run: |
-          mkdir build
-          rsync -av --exclude='.git*' --exclude='node_modules' ./ build/guided-flow-leads
-          cd build
-          zip -r guided-flow-leads-${{ steps.vars.outputs.VERSION }}.zip guided-flow-leads
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME}"
+          else
+            VERSION="manual-${GITHUB_RUN_NUMBER}"
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Prepare package folder
+        run: |
+          mkdir -p dist/guided-flow-leads
+          rsync -av ./ dist/guided-flow-leads/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'dist' \
+            --exclude 'node_modules' \
+            --exclude '*.zip'
+
+      - name: Create zip package
+        run: |
+          cd dist
+          zip -r "guided-flow-leads-${{ steps.vars.outputs.version }}.zip" guided-flow-leads
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-zip
-          path: build/*.zip
+          name: guided-flow-leads-${{ steps.vars.outputs.version }}
+          path: dist/guided-flow-leads-${{ steps.vars.outputs.version }}.zip
 
-      - name: Create Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: build/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: dist/guided-flow-leads-${{ steps.vars.outputs.version }}.zip
