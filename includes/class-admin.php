@@ -207,8 +207,8 @@ class GFL_Admin {
                                 <p class="description"><?php esc_html_e( 'Tip: use short step IDs like choose_topic, ask_phone, or complete. Choice steps can point each option to a different next step.', 'guided-flow-leads' ); ?></p>
                             </div>
 
-                            <script type="text/template" id="tmpl-gfl-step-card"><?php echo wp_kses_post( $this->get_step_template_html() ); ?></script>
-                            <script type="text/template" id="tmpl-gfl-option-row"><?php echo wp_kses_post( $this->get_option_template_html() ); ?></script>
+                            <script type="text/template" id="tmpl-gfl-step-card"><?php echo $this->get_step_template_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
+                            <script type="text/template" id="tmpl-gfl-option-row"><?php echo $this->get_option_template_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
                         </section>
                     </div>
 

@@ -1,11 +1,9 @@
 # Changelog
 
-## 1.0.4
-- Verified the uploaded source is a functional plugin baseline, not a minimal starter scaffold.
-- Added a GitHub Actions release workflow back into the project under `.github/workflows/release.yml`.
-- Added `workflow_dispatch` so releases can also be run manually from GitHub Actions.
-- Standardized package metadata for release packaging (`version.txt`, `readme.txt`, `CHANGELOG.md`).
-- Prepared a clean installable plugin zip from the current uploaded source as the release-ready package.
+## 1.0.7
+- Fixed Flow Editor option-row template rendering.
+- Restored single-line text inputs after clicking "+ Add Option" in admin.
+
 
 ## 1.0.3
 - Upgraded Flow Settings into a dynamic step editor.
