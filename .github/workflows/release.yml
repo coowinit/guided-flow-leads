@@ -1,0 +1,43 @@
+name: Build and Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set variables
+        run: |
+          echo "PLUGIN_SLUG=guided-flow-leads" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+
+      - name: Prepare package directory
+        run: |
+          mkdir -p build/${PLUGIN_SLUG}
+          rsync -av ./ build/${PLUGIN_SLUG}/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'build' \
+            --exclude '*.zip' \
+            --exclude '.DS_Store'
+
+      - name: Create zip package
+        run: |
+          cd build
+          zip -r ${PLUGIN_SLUG}.zip ${PLUGIN_SLUG}
+
+      - name: Create GitHub Release and upload zip
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/guided-flow-leads.zip
+          generate_release_notes: true
