@@ -99,6 +99,15 @@ class GFL_Admin {
             'guided-flow-leads-leads',
             array( $this, 'render_leads_page' )
         );
+
+        add_submenu_page(
+            'guided-flow-leads', // 父菜单 slug（你的主菜单 slug）
+            'Usage Guide',
+            'Usage Guide',
+            'manage_options',
+            'gfl-usage-guide',
+            [$this, 'render_usage_guide_page']
+        );
     }
 
     public function register_settings() {
@@ -410,6 +419,56 @@ class GFL_Admin {
             });
         });
         </script>
+        <?php
+    }
+
+    public function render_usage_guide_page() {
+        ?>
+        <div class="wrap gfl-admin-page">
+            <h1>Guided Flow Leads - Usage Guide</h1>
+    
+            <h2>1. What is this plugin?</h2>
+            <p>
+                Guided Flow Leads allows you to build step-by-step interactive flows
+                to collect leads and guide users through a decision process.
+            </p>
+    
+            <h2>2. How to create a flow</h2>
+            <ol>
+                <li>Go to <strong>Flow Editor</strong></li>
+                <li>Add steps (text, choice, input)</li>
+                <li>Connect steps using "Next Step ID"</li>
+            </ol>
+    
+            <h2>3. How to use Options (Choice Step)</h2>
+            <ul>
+                <li>Label: what user sees</li>
+                <li>Value: stored in lead data</li>
+                <li>Next Step ID: where user goes next</li>
+            </ul>
+    
+            <h2>4. How to display on frontend</h2>
+            <p>
+                Use shortcode or embed script (to be implemented / customized).
+            </p>
+    
+            <h2>5. Data storage</h2>
+            <p>
+                Leads and sessions are stored in database tables:
+            </p>
+            <ul>
+                <li>gfl_leads</li>
+                <li>gfl_sessions</li>
+            </ul>
+    
+            <h2>6. Tips</h2>
+            <ul>
+                <li>Make sure Step IDs are unique</li>
+                <li>Always define a next step</li>
+                <li>Test your flow before publishing</li>
+            </ul>
+    
+        </div>
         <?php
     }
 
