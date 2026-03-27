@@ -1,0 +1,226 @@
+:root {
+    --gfl-brand: #6f2c91;
+    --gfl-bg: #ffffff;
+    --gfl-text: #1f2328;
+    --gfl-muted: #6b7280;
+    --gfl-line: #e5e7eb;
+    --gfl-soft: #f8fafc;
+    --gfl-shadow: 0 18px 48px rgba(15, 23, 42, 0.18);
+}
+
+.gfl-launcher {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999998;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: var(--gfl-brand);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--gfl-shadow);
+}
+
+.gfl-window {
+    position: fixed;
+    right: 20px;
+    bottom: 84px;
+    z-index: 999999;
+    width: min(380px, calc(100vw - 24px));
+    height: min(72vh, 680px);
+    display: flex;
+    flex-direction: column;
+    background: var(--gfl-bg);
+    color: var(--gfl-text);
+    border: 1px solid var(--gfl-line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--gfl-shadow);
+}
+
+.gfl-window[hidden] {
+    display: none;
+}
+
+.gfl-window__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--gfl-brand);
+    color: #fff;
+}
+
+.gfl-window__title {
+    display: block;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.gfl-window__subtitle {
+    margin: 4px 0 0;
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.gfl-window__close {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 1;
+    padding: 0;
+}
+
+.gfl-window__status {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gfl-line);
+    background: #faf5ff;
+    color: #5b3f77;
+    font-size: 12px;
+}
+
+.gfl-window__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.gfl-window__messages {
+    padding: 14px;
+    min-height: 140px;
+}
+
+.gfl-msg {
+    margin-bottom: 12px;
+}
+
+.gfl-msg__name {
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: var(--gfl-muted);
+}
+
+.gfl-msg__bubble {
+    padding: 11px 12px;
+    border-radius: 14px;
+    background: var(--gfl-soft);
+    border: 1px solid var(--gfl-line);
+    font-size: 14px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.gfl-msg--user .gfl-msg__bubble {
+    background: #f3e8ff;
+    border-color: #e9d5ff;
+}
+
+.gfl-window__choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--gfl-line);
+    background: #fff;
+}
+
+.gfl-choice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid #d8b4fe;
+    background: #faf5ff;
+    color: #6b21a8;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gfl-window__form {
+    padding: 14px;
+    border-top: 1px solid var(--gfl-line);
+    background: #fff;
+}
+
+.gfl-window__form textarea {
+    width: 100%;
+    min-height: 88px;
+    resize: vertical;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.gfl-window__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gfl-button {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.gfl-button--primary {
+    flex: 1 1 auto;
+    background: var(--gfl-brand);
+    color: #fff;
+}
+
+.gfl-button--ghost {
+    flex: 0 0 auto;
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.gfl-button[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+    .gfl-launcher {
+        right: 12px;
+        bottom: 12px;
+        padding: 11px 16px;
+    }
+
+    .gfl-window {
+        right: 12px;
+        bottom: 72px;
+        width: calc(100vw - 24px);
+        height: 76vh;
+    }
+
+    .gfl-window__actions {
+        flex-direction: column-reverse;
+    }
+
+    .gfl-button--ghost,
+    .gfl-button--primary {
+        width: 100%;
+    }
+}

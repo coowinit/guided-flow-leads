@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -19,7 +20,7 @@ jobs:
       - name: Set variables
         run: |
           echo "PLUGIN_SLUG=guided-flow-leads" >> $GITHUB_ENV
-          echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_REF_NAME:-manual}" >> $GITHUB_ENV
 
       - name: Prepare package directory
         run: |
@@ -37,7 +38,15 @@ jobs:
           zip -r ${PLUGIN_SLUG}.zip ${PLUGIN_SLUG}
 
       - name: Create GitHub Release and upload zip
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: build/guided-flow-leads.zip
           generate_release_notes: true
+
+      - name: Upload build artifact
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: guided-flow-leads
+          path: build/guided-flow-leads.zip
