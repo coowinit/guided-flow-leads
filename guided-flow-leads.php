@@ -3,7 +3,7 @@
  * Plugin Name:       Guided Flow Leads
  * Plugin URI:        https://example.com/
  * Description:       A lightweight guided chat and lead capture plugin for WordPress. This version refines the admin experience into a cleaner flow configurator without AI dependencies.
- * Version:           1.0.4
+ * Version:           1.0.6
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            OpenAI for Winson Yang
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'GFL_VERSION' ) ) {
-    define( 'GFL_VERSION', '1.0.4' );
+    define( 'GFL_VERSION', '1.0.6' );
 }
 
 if ( ! defined( 'GFL_FILE' ) ) {
