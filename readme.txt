@@ -1,1 +1,1 @@
-Guided Flow Leads v1.0.3 – Flow Editor First Version
+Guided Flow Leads v1.0.8 – Professional Usage Guide Admin Page

@@ -1,3 +1,8 @@
+## 1.0.8
+- add a new Usage Guide submenu under Guided Flow Leads
+- build a more polished admin guide page with hero, cards, timeline, reference, and shortcut sections
+- keep documentation inside the plugin so setup and handoff are easier
+
 # Changelog
 
 ## 1.0.7

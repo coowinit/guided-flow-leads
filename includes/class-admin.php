@@ -101,12 +101,12 @@ class GFL_Admin {
         );
 
         add_submenu_page(
-            'guided-flow-leads', // 父菜单 slug（你的主菜单 slug）
-            'Usage Guide',
-            'Usage Guide',
+            'guided-flow-leads',
+            __( 'Usage Guide', 'guided-flow-leads' ),
+            __( 'Usage Guide', 'guided-flow-leads' ),
             'manage_options',
-            'gfl-usage-guide',
-            [$this, 'render_usage_guide_page']
+            'guided-flow-leads-guide',
+            array( $this, 'render_usage_guide_page' )
         );
     }
 
@@ -240,6 +240,217 @@ class GFL_Admin {
                     </aside>
                 </div>
             </form>
+        </div>
+        <?php
+    }
+
+
+    public function render_usage_guide_page() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $guide_cards = array(
+            array(
+                'eyebrow' => __( 'Quick Start', 'guided-flow-leads' ),
+                'title'   => __( 'Launch a working flow in five minutes', 'guided-flow-leads' ),
+                'text'    => __( 'Enable the widget, define your launcher text, then create the first step in Flow Settings. The flow can start simple and grow later.', 'guided-flow-leads' ),
+                'items'   => array(
+                    __( 'Open Flow Settings and switch on “Enable widget”.', 'guided-flow-leads' ),
+                    __( 'Add a welcome step with a short message and a next step ID.', 'guided-flow-leads' ),
+                    __( 'Create input or choice steps to capture contact details and route visitors forward.', 'guided-flow-leads' ),
+                ),
+            ),
+            array(
+                'eyebrow' => __( 'Flow Logic', 'guided-flow-leads' ),
+                'title'   => __( 'How steps connect to each other', 'guided-flow-leads' ),
+                'text'    => __( 'Each step needs a unique step ID. “Next step ID” controls where the visitor goes next. Choice steps can send different options to different destinations.', 'guided-flow-leads' ),
+                'items'   => array(
+                    __( 'Use short step IDs such as welcome, choose_product, ask_email, or done.', 'guided-flow-leads' ),
+                    __( 'For input steps, the single “Next step ID” moves every visitor to the same next step.', 'guided-flow-leads' ),
+                    __( 'For choice steps, every option row can point to its own next step.', 'guided-flow-leads' ),
+                ),
+            ),
+            array(
+                'eyebrow' => __( 'Leads', 'guided-flow-leads' ),
+                'title'   => __( 'Where submitted data goes', 'guided-flow-leads' ),
+                'text'    => __( 'Completed conversations are stored as leads. You can review them in the Leads screen and receive notifications by email if a notification address is configured.', 'guided-flow-leads' ),
+                'items'   => array(
+                    __( 'Use the Leads page to search, review, and manage submissions.', 'guided-flow-leads' ),
+                    __( 'Keep the notification email up to date so new submissions never get missed.', 'guided-flow-leads' ),
+                    __( 'Test your flow after major edits to confirm the expected lead fields are saved.', 'guided-flow-leads' ),
+                ),
+            ),
+        );
+
+        $builder_steps = array(
+            array(
+                'step'  => '01',
+                'title' => __( 'Configure the widget basics', 'guided-flow-leads' ),
+                'text'  => __( 'Set the launcher label, window title, helper text, and brand color. These values shape the first impression before the user starts the flow.', 'guided-flow-leads' ),
+            ),
+            array(
+                'step'  => '02',
+                'title' => __( 'Build the journey step by step', 'guided-flow-leads' ),
+                'text'  => __( 'Add message, input, or choice steps. Keep IDs unique and connect steps with next-step references so the journey is predictable and easy to maintain.', 'guided-flow-leads' ),
+            ),
+            array(
+                'step'  => '03',
+                'title' => __( 'Preview, save, and test the flow', 'guided-flow-leads' ),
+                'text'  => __( 'Use the Flow Preview panel as a quick structural check, then save the settings and run through the widget on the front end like a real visitor.', 'guided-flow-leads' ),
+            ),
+        );
+
+        $field_reference = array(
+            array(
+                'label' => __( 'Step ID', 'guided-flow-leads' ),
+                'value' => __( 'The internal key for a step. Must be unique.', 'guided-flow-leads' ),
+            ),
+            array(
+                'label' => __( 'Step Title', 'guided-flow-leads' ),
+                'value' => __( 'Short admin-only label used in the editor and preview.', 'guided-flow-leads' ),
+            ),
+            array(
+                'label' => __( 'Message', 'guided-flow-leads' ),
+                'value' => __( 'The text shown to the visitor in the chat window.', 'guided-flow-leads' ),
+            ),
+            array(
+                'label' => __( 'Placeholder', 'guided-flow-leads' ),
+                'value' => __( 'Used on text-like input steps to hint what the visitor should type.', 'guided-flow-leads' ),
+            ),
+            array(
+                'label' => __( 'Options', 'guided-flow-leads' ),
+                'value' => __( 'Only used on choice steps. Each option needs a label, value, and optional next step ID.', 'guided-flow-leads' ),
+            ),
+            array(
+                'label' => __( 'Next Step ID', 'guided-flow-leads' ),
+                'value' => __( 'Controls where the flow continues after the current step.', 'guided-flow-leads' ),
+            ),
+        );
+
+        $shortcuts = array(
+            array(
+                'title' => __( 'Open Flow Settings', 'guided-flow-leads' ),
+                'text'  => __( 'Jump back to the builder to edit the live conversation flow.', 'guided-flow-leads' ),
+                'url'   => admin_url( 'admin.php?page=guided-flow-leads' ),
+                'label' => __( 'Go to Flow Settings', 'guided-flow-leads' ),
+            ),
+            array(
+                'title' => __( 'Review Leads', 'guided-flow-leads' ),
+                'text'  => __( 'Check how real visitors move through the flow and what they submit.', 'guided-flow-leads' ),
+                'url'   => admin_url( 'admin.php?page=guided-flow-leads-leads' ),
+                'label' => __( 'Open Leads', 'guided-flow-leads' ),
+            ),
+        );
+        ?>
+        <div class="wrap gfl-wrap gfl-guide-page">
+            <div class="gfl-guide-hero">
+                <div class="gfl-guide-hero__content">
+                    <span class="gfl-guide-kicker"><?php esc_html_e( 'Guided Flow Leads', 'guided-flow-leads' ); ?></span>
+                    <h1><?php esc_html_e( 'Usage Guide', 'guided-flow-leads' ); ?></h1>
+                    <p class="gfl-guide-hero__text"><?php esc_html_e( 'A practical handbook for setting up your first conversational lead flow, understanding how the step builder works, and checking where lead data is stored.', 'guided-flow-leads' ); ?></p>
+                    <div class="gfl-guide-hero__actions">
+                        <a class="button button-primary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=guided-flow-leads' ) ); ?>"><?php esc_html_e( 'Open Flow Settings', 'guided-flow-leads' ); ?></a>
+                        <a class="button button-secondary button-large" href="<?php echo esc_url( admin_url( 'admin.php?page=guided-flow-leads-leads' ) ); ?>"><?php esc_html_e( 'View Leads', 'guided-flow-leads' ); ?></a>
+                    </div>
+                </div>
+                <div class="gfl-guide-hero__panel">
+                    <div class="gfl-guide-stat">
+                        <span class="gfl-guide-stat__label"><?php esc_html_e( 'Best for', 'guided-flow-leads' ); ?></span>
+                        <strong><?php esc_html_e( 'Lead capture, qualification, and routing', 'guided-flow-leads' ); ?></strong>
+                    </div>
+                    <div class="gfl-guide-stat">
+                        <span class="gfl-guide-stat__label"><?php esc_html_e( 'Core screens', 'guided-flow-leads' ); ?></span>
+                        <strong><?php esc_html_e( 'Flow Settings · Leads · Usage Guide', 'guided-flow-leads' ); ?></strong>
+                    </div>
+                    <div class="gfl-guide-stat">
+                        <span class="gfl-guide-stat__label"><?php esc_html_e( 'Recommended workflow', 'guided-flow-leads' ); ?></span>
+                        <strong><?php esc_html_e( 'Build → Save → Test → Publish', 'guided-flow-leads' ); ?></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gfl-guide-section gfl-guide-section--cards">
+                <?php foreach ( $guide_cards as $card ) : ?>
+                    <section class="gfl-guide-card">
+                        <span class="gfl-guide-card__eyebrow"><?php echo esc_html( $card['eyebrow'] ); ?></span>
+                        <h2><?php echo esc_html( $card['title'] ); ?></h2>
+                        <p><?php echo esc_html( $card['text'] ); ?></p>
+                        <ul>
+                            <?php foreach ( $card['items'] as $item ) : ?>
+                                <li><?php echo esc_html( $item ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </section>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="gfl-guide-grid">
+                <section class="gfl-card gfl-guide-block">
+                    <div class="gfl-card__head">
+                        <h2><?php esc_html_e( 'Setup Path', 'guided-flow-leads' ); ?></h2>
+                        <p><?php esc_html_e( 'A simple sequence for getting from a fresh install to a working lead flow.', 'guided-flow-leads' ); ?></p>
+                    </div>
+                    <div class="gfl-guide-timeline">
+                        <?php foreach ( $builder_steps as $item ) : ?>
+                            <div class="gfl-guide-timeline__item">
+                                <div class="gfl-guide-timeline__badge"><?php echo esc_html( $item['step'] ); ?></div>
+                                <div class="gfl-guide-timeline__content">
+                                    <h3><?php echo esc_html( $item['title'] ); ?></h3>
+                                    <p><?php echo esc_html( $item['text'] ); ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+
+                <section class="gfl-card gfl-guide-block">
+                    <div class="gfl-card__head">
+                        <h2><?php esc_html_e( 'Flow Builder Reference', 'guided-flow-leads' ); ?></h2>
+                        <p><?php esc_html_e( 'Use this quick glossary while editing steps and options.', 'guided-flow-leads' ); ?></p>
+                    </div>
+                    <div class="gfl-guide-reference">
+                        <?php foreach ( $field_reference as $row ) : ?>
+                            <div class="gfl-guide-reference__row">
+                                <strong><?php echo esc_html( $row['label'] ); ?></strong>
+                                <span><?php echo esc_html( $row['value'] ); ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+            </div>
+
+            <div class="gfl-guide-grid gfl-guide-grid--aside">
+                <section class="gfl-card gfl-guide-block">
+                    <div class="gfl-card__head">
+                        <h2><?php esc_html_e( 'Practical Tips', 'guided-flow-leads' ); ?></h2>
+                        <p><?php esc_html_e( 'Small habits that make flows easier to maintain and more reliable in production.', 'guided-flow-leads' ); ?></p>
+                    </div>
+                    <ul class="gfl-guide-list-check">
+                        <li><?php esc_html_e( 'Keep step IDs short, readable, and stable once the flow is live.', 'guided-flow-leads' ); ?></li>
+                        <li><?php esc_html_e( 'Use titles to describe purpose, such as “Choose Product” or “Ask Email”.', 'guided-flow-leads' ); ?></li>
+                        <li><?php esc_html_e( 'Choice steps work best when every option clearly says what happens next.', 'guided-flow-leads' ); ?></li>
+                        <li><?php esc_html_e( 'After structural edits, test the flow from the front end before publishing changes widely.', 'guided-flow-leads' ); ?></li>
+                        <li><?php esc_html_e( 'Review new leads regularly to refine your branching logic and questions.', 'guided-flow-leads' ); ?></li>
+                    </ul>
+                </section>
+
+                <section class="gfl-card gfl-guide-block">
+                    <div class="gfl-card__head">
+                        <h2><?php esc_html_e( 'Helpful Shortcuts', 'guided-flow-leads' ); ?></h2>
+                        <p><?php esc_html_e( 'Use these jump links when you are actively building and testing.', 'guided-flow-leads' ); ?></p>
+                    </div>
+                    <div class="gfl-guide-shortcuts">
+                        <?php foreach ( $shortcuts as $shortcut ) : ?>
+                            <div class="gfl-guide-shortcut">
+                                <h3><?php echo esc_html( $shortcut['title'] ); ?></h3>
+                                <p><?php echo esc_html( $shortcut['text'] ); ?></p>
+                                <a class="button button-secondary" href="<?php echo esc_url( $shortcut['url'] ); ?>"><?php echo esc_html( $shortcut['label'] ); ?></a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+            </div>
         </div>
         <?php
     }
@@ -419,56 +630,6 @@ class GFL_Admin {
             });
         });
         </script>
-        <?php
-    }
-
-    public function render_usage_guide_page() {
-        ?>
-        <div class="wrap gfl-admin-page">
-            <h1>Guided Flow Leads - Usage Guide</h1>
-    
-            <h2>1. What is this plugin?</h2>
-            <p>
-                Guided Flow Leads allows you to build step-by-step interactive flows
-                to collect leads and guide users through a decision process.
-            </p>
-    
-            <h2>2. How to create a flow</h2>
-            <ol>
-                <li>Go to <strong>Flow Editor</strong></li>
-                <li>Add steps (text, choice, input)</li>
-                <li>Connect steps using "Next Step ID"</li>
-            </ol>
-    
-            <h2>3. How to use Options (Choice Step)</h2>
-            <ul>
-                <li>Label: what user sees</li>
-                <li>Value: stored in lead data</li>
-                <li>Next Step ID: where user goes next</li>
-            </ul>
-    
-            <h2>4. How to display on frontend</h2>
-            <p>
-                Use shortcode or embed script (to be implemented / customized).
-            </p>
-    
-            <h2>5. Data storage</h2>
-            <p>
-                Leads and sessions are stored in database tables:
-            </p>
-            <ul>
-                <li>gfl_leads</li>
-                <li>gfl_sessions</li>
-            </ul>
-    
-            <h2>6. Tips</h2>
-            <ul>
-                <li>Make sure Step IDs are unique</li>
-                <li>Always define a next step</li>
-                <li>Test your flow before publishing</li>
-            </ul>
-    
-        </div>
         <?php
     }
 
