@@ -154,4 +154,4 @@ Structured suggestions, bug fixes, and UX improvements are welcome.
 
 ## License
 
-Add your preferred license information here.
+This project is licensed under the MIT License.
